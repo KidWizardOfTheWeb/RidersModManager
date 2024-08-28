@@ -2,10 +2,10 @@ import sys
 import os
 import json
 import time
-from atomicswap import swap
 from tkinter import *
 from tkinter import ttk
-
+from modswap import *
+from modpacker import *
 import requests
 from pathlib import Path
 import tkinter
@@ -65,7 +65,7 @@ def parse_settings(configfile):
         else:
             # if it does exist, normpath just in case
             configdata['GameFolders']['discDir'] = os.path.normpath(configdata['GameFolders']['discDir'])
-            print("Extracted ISO directory found in settings.json.")
+            print("Extracted ISO directory found in settings.json.\n")
         with open(configfile, 'w') as f:
             json.dump(configdata, f, indent=4)
 
@@ -100,7 +100,12 @@ if __name__ == '__main__':
         generateSettings(configpath)
     # parse file if it does
     parse_settings(configpath)
+    configraw = open(configpath)
+    configdata = json.load(configraw)
     # create the menu here and add options:
+    # swap_handler(configdata['ProgramFolders']['modsDir'] + "\\modfile.txt", configdata['ProgramFolders']['texturesDir'] + "\\texturefile.txt")
+
+    create_modpack(configdata)
 
     # 1. Download modpacks from network - modserverwork.py
     # 2. Download files from network - modserverwork.py
