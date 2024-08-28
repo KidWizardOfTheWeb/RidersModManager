@@ -105,11 +105,12 @@ if __name__ == '__main__':
     # create the menu here and add options:
     # swap_handler(configdata['ProgramFolders']['modsDir'] + "\\modfile.txt", configdata['ProgramFolders']['texturesDir'] + "\\texturefile.txt")
 
-    create_modpack(configdata)
+    # create_modpack(configdata)
+    compile_modpack(configdata)
 
     # 1. Download modpacks from network - modserverwork.py
     # 2. Download files from network - modserverwork.py
-    # 3. Compile modpack - modpacker.py
+    # 3. Create and compile modpacks - modpacker.py
     # 4. Swap files - mod files/textures/modpacks - modswap.py
     # 5. Create ADX files for riders - ADXGen.py
     # 6. Send/receive mod files (requires two or more people with an internet connection) - modlinker.py
