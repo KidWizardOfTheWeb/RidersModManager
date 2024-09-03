@@ -10,20 +10,29 @@ import requests
 from pathlib import Path
 import tkinter
 from tkinter import filedialog
+import hashlib
+
+def add_mod_details(modconfigdata):
+    print("Add author, version, description, date here.")
+    modconfigdata['Author'] = input("Type the author of this modpack:\n")
+    modconfigdata['Version'] = input("Type the version of this modpack:\n")
+    modconfigdata['Description'] = input("Type a description of this modpack:\n")
+    modconfigdata['Date'] = time.asctime()
+    print("Date recorded as: " + modconfigdata['Date'])
+
+    pass
 
 def create_status_file(modpackPath):
     # we want to track what files are stored in a modpack, so we create a file recording all the related files.
     modconfigdata = read_all_added_files(modpackPath, os.listdir(modpackPath))
     # This JSON keeps track of whatever folder it's in and the files related to it.
 
-    # Allow user to enter author, description, etc. into dictionary
-    # add_mod_details(modconfigdata)
-
     # Create a JSON with the changed files
     modconfig = os.path.join(modpackPath, "modtrackinginfo.json")
     with open(modconfig, 'w') as f:
         json.dump(modconfigdata, f, indent=4)
     print("modtrackinginfo.json generated.\n")
+    create_hashlist(modpackPath, modconfigdata)
     time.sleep(1)
     pass
 
@@ -32,6 +41,9 @@ def read_all_added_files(modpackRoot, folderList):
     # changedFiles = []
     # match folder name to keys in dictionary, then append file list
     changedFiles = {}
+
+    # Allow user to enter author, description, etc. into dictionary
+    add_mod_details(changedFiles)
     print("Changed files listed below:")
     for folders in range(len(os.listdir(modpackRoot))):
         currentFolder = os.path.join(modpackRoot, folderList[folders])
@@ -71,6 +83,14 @@ def generate_modpack_folders(configdata):
         return ""
 
     return newModpackName
+
+def create_hashlist(modpackPath, modconfigdata):
+    for file in range(len(os.listdir(os.path.join(modpackPath, "files")))):
+        with open(os.path.join(modpackPath, "files", modconfigdata['files'][file]),'rb', buffering=0) as f:
+            print(hashlib.file_digest(f, 'sha256').hexdigest())
+
+
+    pass
 
 def compile_modpack(configdata):
     # search for existing modpacks
