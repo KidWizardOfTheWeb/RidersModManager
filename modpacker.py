@@ -85,9 +85,18 @@ def generate_modpack_folders(configdata):
     return newModpackName
 
 def create_hashlist(modpackPath, modconfigdata):
+    modHashDict = {}
     for file in range(len(os.listdir(os.path.join(modpackPath, "files")))):
         with open(os.path.join(modpackPath, "files", modconfigdata['files'][file]),'rb', buffering=0) as f:
-            print(hashlib.file_digest(f, 'sha256').hexdigest())
+            modHashDict[modconfigdata['files'][file]] = hashlib.file_digest(f, 'sha256').hexdigest()
+            # print(hashlib.file_digest(f, 'sha256').hexdigest())
+    print(modHashDict)
+    print("Files added/changed: " + str(len(modHashDict)))
+
+    modhashfile = os.path.join(modpackPath, "hashlist.json")
+    with open(modhashfile, 'w') as f:
+        json.dump(modHashDict, f, indent=4)
+    print("hashlist.json generated.\n")
 
 
     pass
